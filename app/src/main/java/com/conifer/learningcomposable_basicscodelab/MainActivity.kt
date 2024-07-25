@@ -1,5 +1,6 @@
 package com.conifer.learningcomposable_basicscodelab
 
+import android.content.res.*
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -11,6 +12,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.*
 import androidx.compose.ui.*
+import androidx.compose.ui.text.font.*
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
 import com.conifer.learningcomposable_basicscodelab.ui.theme.LearningComposableBasicsCodelabTheme
@@ -59,6 +61,12 @@ fun Greetings(
     }
 }
 
+@Preview(
+    showBackground = true,
+    widthDp = 320,
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    name = "GreetingPreviewDark"
+)
 @Preview(showBackground = true, widthDp = 320)
 @Composable
 fun GreetingsPreview() {
@@ -89,7 +97,12 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                     .padding(bottom = extraPadding.coerceAtLeast(0.dp))
             ) {
                 Text(text = "Hello ")
-                Text(text = name)
+                Text(
+                    text = name,
+                    style = MaterialTheme.typography.headlineMedium.copy(
+                        fontWeight = FontWeight.ExtraBold
+                    )
+                )
             }
             ElevatedButton(
                 onClick = { expanded = !expanded }
