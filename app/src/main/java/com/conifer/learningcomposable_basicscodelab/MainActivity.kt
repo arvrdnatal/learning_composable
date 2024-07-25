@@ -5,13 +5,17 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
+import androidx.compose.material.icons.*
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.*
 import androidx.compose.ui.*
+import androidx.compose.ui.res.*
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
@@ -78,23 +82,22 @@ fun GreetingsPreview() {
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     var expanded by rememberSaveable { mutableStateOf(false) }
-    val extraPadding by animateDpAsState(
-        targetValue = if (expanded) 48.dp else 0.dp,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessLow
+    Card(
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primary
         ),
-        label = ""
-    )
-    Surface(
-        color = MaterialTheme.colorScheme.primary,
         modifier = modifier.padding(vertical = 4.dp, horizontal = 8.dp)
     ) {
         Row(modifier = Modifier.padding(24.dp)) {
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(bottom = extraPadding.coerceAtLeast(0.dp))
+                    .animateContentSize(
+                        animationSpec = spring(
+                            dampingRatio = Spring.DampingRatioLowBouncy,
+                            stiffness = Spring.StiffnessLow
+                        )
+                    )
             ) {
                 Text(text = "Hello ")
                 Text(
@@ -103,11 +106,19 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                         fontWeight = FontWeight.ExtraBold
                     )
                 )
+                if (expanded) {
+                    Text(
+                        text = ("Composem ipsum color sit lazy, " +
+                                "padding theme elit, sed do bouncy. ").repeat(4),
+                    )
+                }
             }
-            ElevatedButton(
+            IconButton(
                 onClick = { expanded = !expanded }
             ) {
-                Text(if (expanded) "Show less" else "Show more")
+                if (expanded)
+                    Icon(imageVector = Icons.Filled.KeyboardArrowUp, contentDescription = stringResource(R.string.show_less))
+                else Icon(imageVector = Icons.Filled.KeyboardArrowDown, contentDescription = stringResource(R.string.show_more))
             }
         }
     }
